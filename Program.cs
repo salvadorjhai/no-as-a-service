@@ -12,6 +12,8 @@ namespace no_as_a_service
 
             builder.Services.AddRateLimiter(options =>
             {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
                 options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
                 {
                     var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
@@ -24,9 +26,12 @@ namespace no_as_a_service
                         QueueLimit = 0
                     });
                 });
+
             });
 
             var app = builder.Build();
+            app.UseRateLimiter();
+
             var reasons = JRaw.Parse(File.ReadAllText(@".\reason.js"));
             var rnd = new Random(DateTime.Now.Second);
 
