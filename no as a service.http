@@ -1,0 +1,11 @@
+@no_as_a_service_HostAddress = http://localhost:5196
+
+GET {{no_as_a_service_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{no_as_a_service_HostAddress}}/todos/1
+Accept: application/json
+
+###
